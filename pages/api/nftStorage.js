@@ -10,7 +10,7 @@ export async function pinFileToIPFS(file) {
 		const ipfsFile = await axios.post(baseURL + "/upload", formData, {
 			headers: {
 				"Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
-				Authorization: `Bearer ${process.env.REACT_APP_NFTSTORAGE_KEY}`,
+				Authorization: `Bearer ${process.env.NEXT_PUBLIC_NFTSTORAGE_KEY}`,
 			},
 		});
 		const data = ipfsFile.data.value;
@@ -31,7 +31,7 @@ export async function pinJSONToIPFS(name, assetUrl) {
 		const jsonIpfs = await axios.post(baseURL + "/upload", content, {
 			headers: {
 				"Content-Type": `application/json`,
-				Authorization: `Bearer ${process.env.REACT_APP_NFTSTORAGE_KEY}`,
+				Authorization: `Bearer ${process.env.NEXT_PUBLIC_NFTSTORAGE_KEY}`,
 			},
 		});
 		const url = `${process.env.REACT_APP_IPFS_BASE_URL}/${jsonIpfs.data.value.cid}`;

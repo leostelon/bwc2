@@ -1,9 +1,9 @@
 import { pinJSONToIPFS } from "./nftStorage"
-import NFTInterface from "../contracts/NFT.json"
-import { CONTRACT_ADDRESS } from "../constants";
-import { getWalletAddress, switchChain } from "../utils/wallet";
-import { createNFT } from "../database/nft";
-import { updateNFT } from "../database/user";
+import NFTInterface from "../../contracts/NFT.json"
+import { CONTRACT_ADDRESS } from "../../constants";
+import { getWalletAddress, switchChain } from "../../utils/wallet";
+import { createNFT } from "../../database/nft";
+import { updateNFT } from "../../database/user";
 
 export async function create(name) {
     try {

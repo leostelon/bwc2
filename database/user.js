@@ -1,7 +1,7 @@
 const { db } = require(".");
 const jwt = require("jsonwebtoken");
 const { getWalletAddress } = require("../utils/wallet");
-const { pinFileToIPFS } = require("../api/nftStorage");
+const { pinFileToIPFS } = require("../pages/api/nftStorage");
 
 const collectionReference = db.collection("User");
 
