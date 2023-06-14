@@ -14,7 +14,7 @@ export async function pinFileToIPFS(file) {
 			},
 		});
 		const data = ipfsFile.data.value;
-		const assetUrl = `${process.env.REACT_APP_IPFS_BASE_URL}/${data.cid}/${data.files[0].name}`;
+		const assetUrl = `${process.env.NEXT_PUBLIC_IPFS_BASE_URL}/${data.cid}/${data.files[0].name}`;
 		return assetUrl;
 	} catch (error) {
 		console.log(error);
@@ -34,7 +34,7 @@ export async function pinJSONToIPFS(name, assetUrl) {
 				Authorization: `Bearer ${process.env.NEXT_PUBLIC_NFTSTORAGE_KEY}`,
 			},
 		});
-		const url = `${process.env.REACT_APP_IPFS_BASE_URL}/${jsonIpfs.data.value.cid}`;
+		const url = `${process.env.NEXT_PUBLIC_IPFS_BASE_URL}/${jsonIpfs.data.value.cid}`;
 
 		return url;
 	} catch (error) {
