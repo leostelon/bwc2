@@ -1,4 +1,4 @@
-import { pinFileToIPFS } from "../api/nftStorage";
+import { pinFileToIPFS } from "../pages/api/nftStorage";
 
 const { db } = require(".");
 
