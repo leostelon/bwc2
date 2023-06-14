@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getLink, getLinksWithId } from "../database/link";
 import { AiOutlineShareAlt } from "react-icons/ai";
+import NoProfilePicture from "../assets/default-profile-icon.png";
 
 export default function Home() {
 	const router = useRouter();
@@ -44,9 +45,7 @@ export default function Home() {
 					>
 						<img
 							src={
-								user?.profile_image
-									? user.profile_image
-									: "https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60"
+								user?.profile_image ? user.profile_image : NoProfilePicture.src
 							}
 							alt=""
 							style={{
@@ -94,7 +93,7 @@ export default function Home() {
 							key={i}
 							onClick={async () => {
 								await getLink(l.data.id);
-								window.open(l.data.url, "_blank");
+								window.open(`https://${l.data.url}`, "_blank");
 							}}
 						>
 							<LinkImg>
@@ -155,6 +154,8 @@ const LinkContainer = muiStyled(Box)({
 	display: "flex",
 	justifyContent: "space-between",
 	alignItems: "center",
+
+	cursor: "pointer",
 });
 
 const LinkImg = muiStyled(Box)({

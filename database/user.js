@@ -31,7 +31,7 @@ export const createUser = async function (address) {
 		let user;
 		try {
 			user = await collectionReference.record(address).get();
-		} catch (err) { }
+		} catch (err) {}
 
 		if (!user?.data?.id) {
 			await collectionReference.create([address]);
@@ -50,7 +50,7 @@ export const getUser = async function (address) {
 		let user;
 		try {
 			user = await collectionReference.record(address).get();
-		} catch (err) { }
+		} catch (err) {}
 		return user.data;
 	} catch (error) {
 		console.log(error.message);
