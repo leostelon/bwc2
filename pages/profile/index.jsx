@@ -29,18 +29,24 @@ import { toast } from "react-toastify";
 import BgImg from "../../assets/background-spheron.png";
 import Twitter from "../../assets/twitter.png";
 import Phone from "../../assets/phone.png";
-
-const actions = [
-	{ title: "Link Phone", image: Phone.src },
-	{ title: "Link Twitter", image: Twitter.src },
-];
+import AddPhone from "@/components/AddPhone";
+import AddTwitter from "@/components/AddTwitter";
 
 export default function Profile() {
 	const [openAddLink, setOpenAddLink] = useState(false);
+	const [openAddPhone, setOpenAddPhone] = useState(false);
+	const [openAddTwitter, setOpenAddTwitter] = useState(false);
 	const [links, setLinks] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [user, setUser] = useState();
 	const [openLoading, setOpenLoading] = useState(false);
+	const actions = [
+		{
+			title: "Link Phone",
+			image: Phone.src,
+		},
+		{ title: "Link Twitter", image: Twitter.src },
+	];
 
 	async function linkExternalclose() {
 		setOpenAddLink(false);
@@ -133,6 +139,18 @@ export default function Profile() {
 						handleExternalClose={linkExternalclose}
 					/>
 				)}
+				{openAddPhone && (
+					<AddPhone
+						isOpen={openAddPhone}
+						handleExternalClose={() => setOpenAddPhone(false)}
+					/>
+				)}
+				{openAddTwitter && (
+					<AddTwitter
+						isOpen={openAddTwitter}
+						handleExternalClose={() => setOpenAddTwitter(false)}
+					/>
+				)}
 				<Holder>
 					<br />
 					<h4 style={{ color: "#525252" }}>Powered by Social Connect ✨</h4>
@@ -160,7 +178,13 @@ export default function Profile() {
 										border: `3px solid #5292ff`,
 									},
 								}}
-								onClick={() => navigate(i.path)}
+								onClick={() => {
+									if (ind === 0) {
+										setOpenAddPhone(true);
+									} else if (ind === 1) {
+										setOpenAddTwitter(true);
+									}
+								}}
 							>
 								<Box
 									sx={{
