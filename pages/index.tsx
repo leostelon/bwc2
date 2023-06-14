@@ -4,11 +4,13 @@ import { create } from "./api/contract";
 import { connectWalletToSite, getWalletAddress } from "../utils/wallet";
 import { createUser, getUser } from "../database/user";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export default function Main() {
 	const [name, setName] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [connectedToSite, setConnectedToSite] = useState(false);
+	const router = useRouter()
 
 	async function createNFT() {
 		if (!name || name === "") return toast("Enter your unique Celo ID");
@@ -42,7 +44,7 @@ export default function Main() {
 		const user = await getUser(address);
 		console.log(user);
 		if (user && user.celo_id && user.celo_id !== "") {
-			// navigate("/profile");
+			router.push("/profile");
 		}
 	}
 

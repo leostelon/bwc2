@@ -18,3 +18,98 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
 		monospace;
 }
+
+.box-icon {
+	margin-right: 4px;
+	padding: 2px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 14px;
+	color: rgb(103, 107, 95);
+}
+
+.box-icon-hover:hover {
+	background-color: rgb(230, 230, 230);
+	color: rgb(91, 95, 84);
+	border-radius: 6px;
+}
+
+.box-icon-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-right: 0.5rem;
+	font-size: 18px;
+}
+
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	padding: 16px;
+	width: 100%;
+	background-color: white;
+	border-radius: 50px;
+	margin-top: 8px;
+}
+
+.navbar .upload-button {
+	background-color: rgb(41, 91, 255);
+	color: white;
+	padding: 8px 16px;
+	border-radius: 4px;
+	font-weight: 600;
+	margin-right: 32px;
+	cursor: pointer;
+}
+
+.navbar .profile-icon {
+	padding: 8px;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	font-size: 18px;
+	border: 0.5px solid rgb(199 199 199);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.nav-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 18px;
+	padding: 6px;
+	margin: 0 4px;
+	cursor: pointer;
+	border-radius: 6px;
+	color: rgb(103, 107, 95);
+}
+
+.nav-icon:hover {
+	background-color: rgb(230, 230, 230);
+	color: rgb(91, 95, 84);
+}
+
+.colorful {
+	cursor: pointer;
+	background-image: linear-gradient(
+		-45deg,
+		#d80735,
+		#ee005d,
+		#fe1488,
+		#ff38b7,
+		#ff59e7
+	);
+	border-radius: 20px;
+	animation: hue 5s ease-in-out infinite;
+	-moz-animation: hue 5s ease-in-out infinite;
+	-webkit-animation: hue 5s ease-in-out infinite;
+	top: -4px;
+	right: 0;
+	color: white;
+}
