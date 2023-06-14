@@ -1,0 +1,42 @@
+@public
+collection User {
+  id: string; // wallet address
+
+  publicKey?: PublicKey;
+  name: string; // wallet address
+  username?: string;
+  token?: string;
+  tokenId?: number;
+  celo_id?: string;
+  masa_id?: string;
+  profile_image?: string;
+  bg_image?: string;
+
+  constructor (id: string) {
+    this.id = id;
+    this.name = id;
+    this.updatedUsername = false;
+    this.publicKey = ctx.publicKey;
+  }
+
+  updateToken(token: string) {
+    this.token = token;
+  }
+
+  updateNFT(tokenId: number, celo_id: string) {
+     this.tokenId = tokenId;
+     this.celo_id = celo_id;
+  }
+
+  updateMasaId(masa_id: string) {
+     this.masa_id = masa_id;
+  }
+
+  updateProfileImage(url: string) {
+     this.profile_image = url;
+  }
+
+  updateBackgroundImage(url: string) {
+     this.bg_image = url;
+  }
+}

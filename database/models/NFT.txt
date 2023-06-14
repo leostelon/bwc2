@@ -1,0 +1,17 @@
+@public
+collection NFT {
+  id: string; 
+
+  name: string;
+  tokenId: number;
+  creator: string;
+  timestamp: number;
+
+  constructor (name: string, tokenId: number, creator: string) {
+    this.id = name;
+    this.name = name;
+    this.tokenId = tokenId;
+    this.creator = creator;
+    this.timestamp = Date.now();
+  }
+}

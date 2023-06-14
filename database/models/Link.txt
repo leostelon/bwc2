@@ -1,0 +1,39 @@
+@public
+collection Link {
+  id: string;
+  url: string;
+  title: string;
+  user: string;
+  image?: string;
+  disabled: boolean;
+  clicks: number;
+  timestamp: number;
+
+  @index(user, timestamp);
+  
+  constructor(url:string, title: string, user:string) {
+    this.id = user + ":" + Date.now();
+    this.url = url;
+    this.title = title;
+    this.user = user;
+    this.clicks = 0;
+    this.disabled = false;
+    this.timestamp = Date.now();
+  }
+
+  function incrementClick() {
+    this.clicks += 1;
+  }
+
+  function updateImage(image: string) {
+    this.image = image;
+  }
+
+  function updateURL(url: string) {
+    this.url = url;
+  }
+
+  function updateTitle(title: string) {
+    this.title = title;
+  }
+}
