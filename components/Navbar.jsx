@@ -70,9 +70,7 @@ export const Navbar = () => {
 		try {
 			setOpenLoading(true);
 			await switchChain();
-			const soulNames = await masa().soulName.loadSoulNames(
-				"0xCB171Eb1b9bb01763326d1D842f3b5C6422Fdec9"
-			);
+			const soulNames = await masa().soulName.loadSoulNames(username);
 
 			if (soulNames.length > 0) {
 				toast(`Linking ${soulNames[0]}.celo to Celinks🌴`, { type: "info" });
@@ -106,7 +104,6 @@ export const Navbar = () => {
 				display: "flex",
 				alignItems: "center",
 				flexDirection: "column",
-				borderBottom: "1px solid #f5f5f5",
 			}}
 		>
 			<Dialog
@@ -198,7 +195,11 @@ export const Navbar = () => {
 							<Box display="flex" alignItems={"center"}>
 								<Box
 									sx={{
-										backgroundImage: `url("${NoProfilePicture}")`,
+										backgroundImage: `url("${
+											user && user.profile_image
+												? user.profile_image
+												: NoProfilePicture.src
+										}")`,
 										backgroundPosition: "center",
 										backgroundRepeat: "no-repeat",
 										backgroundSize: "cover",

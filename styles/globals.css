@@ -53,6 +53,7 @@ code {
 	background-color: white;
 	border-radius: 50px;
 	margin-top: 8px;
+	box-shadow: 0 1px 3px 0 rgba(106, 106, 106, 0.2);
 }
 
 .navbar .upload-button {

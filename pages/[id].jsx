@@ -1,13 +1,12 @@
 import { Box, IconButton, Skeleton, styled as muiStyled } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getLinksWithId } from "../database/link";
+import { getLink, getLinksWithId } from "../database/link";
 import { AiOutlineShareAlt } from "react-icons/ai";
 
 export default function Home() {
 	const router = useRouter();
 	const { id } = router.query;
-	console.log(id);
 	const [links, setLinks] = useState([]);
 	const [user, setUser] = useState();
 	const [loading, setLoading] = useState(true);
@@ -20,12 +19,10 @@ export default function Home() {
 		setLoading(false);
 	}
 
-	console.log(user);
 	useEffect(() => {
 		if (id) gLWId(id);
 	}, [id]);
 
-	console.log(user?.bg_image);
 	return (
 		<div>
 			<MainContainer

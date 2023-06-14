@@ -1,5 +1,7 @@
 import {
 	Box,
+	CircularProgress,
+	Dialog,
 	IconButton,
 	InputBase,
 	Skeleton,
@@ -15,8 +17,8 @@ import {
 } from "react-icons/ai";
 import { BsPerson } from "react-icons/bs";
 import { useEffect, useState } from "react";
-import AddLink from "../../Components/AddLink";
-import { Navbar } from "../../Components/Navbar";
+import AddLink from "../../components/AddLink";
+import { Navbar } from "../../components/Navbar";
 import { deleteLink, getLinks } from "../../database/link";
 import {
 	getUser,
@@ -24,12 +26,21 @@ import {
 	updateProfilePic,
 } from "../../database/user";
 import { toast } from "react-toastify";
+import BgImg from "../../assets/background-spheron.png";
+import Twitter from "../../assets/twitter.png";
+import Phone from "../../assets/phone.png";
+
+const actions = [
+	{ title: "Link Phone", image: Phone.src },
+	{ title: "Link Twitter", image: Twitter.src },
+];
 
 export default function Profile() {
 	const [openAddLink, setOpenAddLink] = useState(false);
 	const [links, setLinks] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [user, setUser] = useState();
+	const [openLoading, setOpenLoading] = useState(false);
 
 	async function linkExternalclose() {
 		setOpenAddLink(false);
@@ -58,10 +69,10 @@ export default function Profile() {
 		if (e.target.files[0]?.type?.split("/")[0] !== "image")
 			toast("Please select a file with type image!");
 		else {
-			// setProfileImageLoading(true);
+			setOpenLoading(true);
 			await updateProfilePic(e.target.files[0]);
 			await gU();
-			// setProfileImageLoading(false);
+			setOpenLoading(false);
 			toast("Profile Image Updated Successfully!");
 		}
 	};
@@ -69,16 +80,51 @@ export default function Profile() {
 		if (e.target.files[0]?.type?.split("/")[0] !== "image")
 			toast("Please select a file with type image!");
 		else {
-			// setProfileBgImageLoading(true);
+			setOpenLoading(true);
 			await updateBackgroundPic(e.target.files[0]);
 			await gU();
-			// setProfileBgImageLoading(false);
+			setOpenLoading(false);
 			toast("Background Image Updated Successfully!");
 		}
 	};
 
 	return (
-		<div>
+		<div style={{ position: "relative", backgroundColor: "transparent" }}>
+			<Box
+				position={"absolute"}
+				right={0}
+				sx={{
+					backgroundImage: `url('${BgImg.src}')`,
+					backgroundPosition: "right",
+					backgroundRepeat: "no-repeat",
+					width: "100vw",
+					height: "100vh",
+					filter: "brightness(2)",
+					zIndex: -1,
+				}}
+			></Box>
+			<Dialog
+				fullWidth
+				maxWidth="xs"
+				open={openLoading}
+				PaperProps={{
+					style: {
+						backgroundColor: "transparent",
+						boxShadow: "none",
+					},
+				}}
+			>
+				<Box
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						height: "100px",
+					}}
+				>
+					<CircularProgress sx={{ color: "white" }} />
+				</Box>
+			</Dialog>
 			<MainContainer sx={{ padding: { xs: "0 5%", sm: "0 10%", md: "0 20%" } }}>
 				<Navbar />
 				{openAddLink && (
@@ -88,6 +134,62 @@ export default function Profile() {
 					/>
 				)}
 				<Holder>
+					<br />
+					<h4 style={{ color: "#525252" }}>Powered by Social Connect ✨</h4>
+					<br />
+					<Box display={"flex"}>
+						{actions.map((i, ind) => (
+							<Box
+								key={ind}
+								sx={{
+									borderRadius: "12px",
+									p: 2,
+									display: "flex",
+									flexDirection: "column",
+									justifyContent: "center",
+									alignItems: "space-between",
+									height: "100px",
+									width: "120px",
+									mx: 1,
+									ml: ind === 0 ? 0 : 1,
+									cursor: "pointer",
+									border: `3px solid transparent`,
+									backgroundColor: "#e9e9e95d",
+									"&:hover": {
+										backgroundColor: "#e9e9e933",
+										border: `3px solid #5292ff`,
+									},
+								}}
+								onClick={() => navigate(i.path)}
+							>
+								<Box
+									sx={{
+										flex: 2,
+										backgroundImage: `url("${i.image}")`,
+										backgroundPosition: "center",
+										backgroundSize: "contain",
+										backgroundRepeat: "no-repeat",
+										minHeight: "60px",
+									}}
+								></Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "flex-end",
+										justifyContent: "center",
+										textAlign: "center",
+										flex: 1,
+										fontSize: "12px",
+										fontWeight: "600",
+									}}
+								>
+									<p>{i.title}</p>
+								</Box>
+							</Box>
+						))}
+					</Box>
+					<br />
+					<h4 style={{ color: "#525252" }}>Actions ⚒️</h4>
 					<Box
 						sx={{
 							display: "flex",
@@ -155,6 +257,8 @@ export default function Profile() {
 							Preview
 						</Box>
 					</Box>
+					<h4 style={{ color: "#525252" }}>Links 📃</h4>
+					<br />
 					{loading
 						? Array.from({ length: 5 }).map((_, i) => (
 								<Skeleton
@@ -234,7 +338,7 @@ export default function Profile() {
 
 const MainContainer = styled(Box)({
 	backgroundColor: "black",
-	backgroundColor: "#F3F3F1",
+	backgroundColor: "transparent",
 	width: "100%",
 	display: "flex",
 	flexDirection: "column",
@@ -264,6 +368,7 @@ const LinkCont = styled(Box)({
 	padding: "20px",
 
 	marginBottom: "16px",
+	boxShadow: "0 1px 3px 0 rgba(106, 106, 106, 0.2)",
 });
 const LinkDescription = styled(Box)({
 	display: "flex",
