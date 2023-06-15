@@ -89,7 +89,7 @@ export default function Main() {
 								borderRadius: "10px",
 							}}
 						>
-							<Box>linktr.ee/</Box>
+							<Box>cellinks.xyz/</Box>
 							<Box sx={{ paddingTop: "3px" }}>
 								<InputBase
 									type="text"
@@ -122,7 +122,7 @@ export default function Main() {
 							{loading ? (
 								<CircularProgress sx={{ color: "white" }} size={32} />
 							) : connectedToSite ? (
-								"Claim your Linktree"
+								"Claim your Cellink"
 							) : (
 								"Connect Wallet"
 							)}
@@ -155,7 +155,7 @@ export default function Main() {
 							pb: 3,
 						}}
 					>
-						Linktree*
+						Cellinks*
 					</Box>
 				</Box>
 			</Box>
