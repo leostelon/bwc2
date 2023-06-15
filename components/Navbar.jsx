@@ -70,12 +70,12 @@ export const Navbar = () => {
 		try {
 			setOpenLoading(true);
 			await switchChain();
-			const soulNames = await masa().soulName.loadSoulNames(username);
+			const soulNames = await masa.soulName.loadSoulNames(username);
 
 			if (soulNames.length > 0) {
-				toast(`Linking ${soulNames[0]}.celo to Celinks🌴`, { type: "info" });
+				toast(`Linking ${soulNames[0]}.celo to Cellinks🌴`, { type: "info" });
 				await updateMasaId(soulNames[0]);
-				toast(`Succesffuly linked ${soulNames[0]}.celo to Celinks🌴`, {
+				toast(`Succesffuly linked ${soulNames[0]}.celo to Cellinks🌴`, {
 					type: "success",
 				});
 			} else {
@@ -130,7 +130,7 @@ export const Navbar = () => {
 			</Dialog>
 			<div className="navbar">
 				<div>
-					<h1>Celinks🌴</h1>
+					<h1>Cellinks🌴</h1>
 				</div>
 				<div
 					style={{

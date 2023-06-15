@@ -16,8 +16,6 @@ export default function Main() {
 		if (!name || name === "") return toast("Enter your unique Celo ID");
 		setLoading(true);
 		await create(name);
-		await checkCeloId();
-		toast("Successfully created a CELO ID🥳", { type: "success" });
 		setName("");
 		setLoading(false);
 	}

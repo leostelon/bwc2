@@ -3,7 +3,7 @@ import NFTInterface from "../../contracts/NFT.json"
 import { CONTRACT_ADDRESS } from "../../constants";
 import { getWalletAddress, switchChain } from "../../utils/wallet";
 import { createNFT } from "../../database/nft";
-import { updateNFT } from "../../database/user";
+import { getUser, updateNFT } from "../../database/user";
 
 export async function create(name) {
     try {
@@ -36,6 +36,14 @@ export async function create(name) {
                 const tokenId = parseInt(receipt.events.Transfer.returnValues.tokenId);
                 await createNFT(name, tokenId);
                 await updateNFT(tokenId, name)
+                const address = await getWalletAddress();
+                const user = await getUser(address);
+                console.log(user);
+                if (user && user.celo_id && user.celo_id !== "") {
+                    router.push("/profile");
+                }
+                toast("Successfully created a CELO ID🥳", { type: "success" });
+
             });
     } catch (err) {
         console.log(err)
