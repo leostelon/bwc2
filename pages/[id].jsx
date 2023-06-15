@@ -42,20 +42,16 @@ export default function Home() {
 							width: "100px",
 							mt: 8,
 						}}
-					>
-						<img
-							src={
-								user?.profile_image ? user.profile_image : NoProfilePicture.src
-							}
-							alt=""
-							style={{
-								width: "100%",
-								height: "100%",
-								borderRadius: "50px",
-								objectFit: "cover",
-							}}
-						/>
-					</Box>
+						style={{
+							backgroundImage: user?.profile_image
+								? `url(${user?.profile_image})`
+								: NoProfilePicture.src,
+							backgroundPosition: "center",
+							backgroundRepeat: "no-repeat",
+							backgroundSize: "cover",
+							borderRadius: "50px",
+						}}
+					></Box>
 				)}
 				{!loading && (
 					<Box
@@ -96,20 +92,19 @@ export default function Home() {
 								window.open(`https://${l.data.url}`, "_blank");
 							}}
 						>
-							<LinkImg>
-								{l.data.image && (
-									<img
-										src={l.data.image}
-										alt=""
-										style={{
-											width: "100%",
-											height: "100%",
-											borderRadius: "50px",
-											objectFit: "cover",
-										}}
-									/>
-								)}
-							</LinkImg>
+							<LinkImg
+								style={
+									l.data.image
+										? {
+												backgroundImage: `url(${l.data.image})`,
+												backgroundPosition: "center",
+												backgroundRepeat: "no-repeat",
+												backgroundSize: "cover",
+												borderRadius: "50px",
+										  }
+										: {}
+								}
+							></LinkImg>
 							<Box>{l.data.title}</Box>
 							<IconButton aria-label="share">
 								<AiOutlineShareAlt />
