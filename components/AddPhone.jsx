@@ -4,6 +4,7 @@ import { PurpleButton } from "./PurpleButton";
 import { toast } from "react-toastify";
 import { Info } from "./Info";
 import { registerAttestation } from "@/utils/celo";
+import { createLink } from "@/database/link";
 
 export default function AddPhone({ isOpen, handleExternalClose }) {
 	const [open, setOpen] = useState(false);
@@ -23,6 +24,7 @@ export default function AddPhone({ isOpen, handleExternalClose }) {
 		setLoading(true);
 		const userAccount = localStorage.getItem("address");
 		await registerAttestation(title, userAccount, "phone");
+		await createLink(`tel:${title}`, "Phone");
 		toast("New link created succesfully🥳", { type: "success" });
 		setLoading(false);
 		handleClose();
