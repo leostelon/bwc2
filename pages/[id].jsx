@@ -97,16 +97,18 @@ export default function Home() {
 							}}
 						>
 							<LinkImg>
-								<img
-									src="https://images.unsplash.com/photo-1579783483458-83d02161294e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1997&q=80"
-									alt=""
-									style={{
-										width: "100%",
-										height: "100%",
-										borderRadius: "50px",
-										objectFit: "cover",
-									}}
-								/>
+								{l.data.image && (
+									<img
+										src={l.data.image}
+										alt=""
+										style={{
+											width: "100%",
+											height: "100%",
+											borderRadius: "50px",
+											objectFit: "cover",
+										}}
+									/>
+								)}
 							</LinkImg>
 							<Box>{l.data.title}</Box>
 							<IconButton aria-label="share">

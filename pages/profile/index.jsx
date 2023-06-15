@@ -19,7 +19,7 @@ import { BsPerson } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import AddLink from "../../components/AddLink";
 import { Navbar } from "../../components/Navbar";
-import { deleteLink, getLinks } from "../../database/link";
+import { deleteLink, getLinks, updateImage } from "../../database/link";
 import {
 	getUser,
 	updateBackgroundPic,
@@ -88,6 +88,17 @@ export default function Profile() {
 		else {
 			setOpenLoading(true);
 			await updateBackgroundPic(e.target.files[0]);
+			await gU();
+			setOpenLoading(false);
+			toast("Background Image Updated Successfully!");
+		}
+	};
+	const updateLinkImage = async (e, id) => {
+		if (e.target.files[0]?.type?.split("/")[0] !== "image")
+			toast("Please select a file with type image!");
+		else {
+			setOpenLoading(true);
+			await updateImage(id, e.target.files[0]);
 			await gU();
 			setOpenLoading(false);
 			toast("Background Image Updated Successfully!");
@@ -321,9 +332,7 @@ export default function Profile() {
 												/>
 											</Box>
 										</Box>
-										<Box>
-											<IOSSwitch defaultChecked />
-										</Box>
+										<Box>{/* <IOSSwitch defaultChecked /> */}</Box>
 									</LinkDescription>
 									<LinkDescription>
 										<Box
@@ -332,8 +341,12 @@ export default function Profile() {
 												alignItems: "center",
 											}}
 										>
-											<IconButton aria-label="delete">
+											<IconButton
+												onChange={(e) => updateLinkImage(e, a.data.id)}
+												component="label"
+											>
 												<MdOutlineImage />
+												<input type="file" hidden />
 											</IconButton>
 											<Box>{a.data.clicks} clicks</Box>
 										</Box>
