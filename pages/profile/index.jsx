@@ -101,7 +101,7 @@ export default function Profile() {
 			await updateImage(id, e.target.files[0]);
 			await gU();
 			setOpenLoading(false);
-			toast("Background Image Updated Successfully!");
+			toast("Link icon updated successfully.");
 		}
 	};
 

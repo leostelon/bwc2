@@ -2,8 +2,9 @@ import { Box, IconButton, Skeleton, styled as muiStyled } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getLink, getLinksWithId } from "../database/link";
-import { AiOutlineShareAlt } from "react-icons/ai";
+import { AiFillDollarCircle, AiOutlineShareAlt } from "react-icons/ai";
 import NoProfilePicture from "../assets/default-profile-icon.png";
+import ValoQr from "@/components/ValoQr";
 
 export default function Home() {
 	const router = useRouter();
@@ -12,11 +13,18 @@ export default function Home() {
 	const [user, setUser] = useState();
 	const [loading, setLoading] = useState(true);
 
+	const [isOpenQR, setIsOpenQR] = useState(false);
+
 	async function gLWId(id) {
-		setLoading(true);
-		const { user, links } = await getLinksWithId(id);
-		setUser(user);
-		setLinks(links);
+		try {
+			setLoading(true);
+			const { user, links } = await getLinksWithId(id);
+			setUser(user);
+			setLinks(links);
+			console.log(user);
+		} catch (error) {
+			console.log(error);
+		}
 		setLoading(false);
 	}
 
@@ -63,9 +71,28 @@ export default function Home() {
 							color: "white",
 						}}
 					>
-						@{user.celo_id}
+						{user && (
+							<>
+								@{user.celo_id}
+								<IconButton
+									onClick={() => {
+										setIsOpenQR(true);
+									}}
+								>
+									<AiFillDollarCircle color="#FFD700" />
+								</IconButton>
+							</>
+						)}
 					</Box>
 				)}
+				<ValoQr
+					isOpen={isOpenQR}
+					address={user?.id}
+					displayName={user?.celo_id}
+					handleExternalClose={() => {
+						setIsOpenQR(false);
+					}}
+				/>
 
 				{loading ? (
 					<Box
