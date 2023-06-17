@@ -1,6 +1,35 @@
-import { Box, Button, Dialog, TextField } from "@mui/material";
+import {
+	Box,
+	Button,
+	Dialog,
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Select,
+	TextField,
+} from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import QRCode from "qrcode";
+import { LocalCurrencySymbol } from "../assets/LOCAL_CURRENCY_CODES";
+
+const TOKEN = [
+	{
+		value: "cUSD",
+		key: "celo Dollar",
+	},
+	{
+		value: "cEUR",
+		key: "celo Euro",
+	},
+	{
+		value: "CELO",
+		key: "CELO",
+	},
+	{
+		value: "cREAL",
+		key: "celo Real",
+	},
+];
 
 export default function ValoQr({
 	isOpen,
@@ -21,6 +50,14 @@ export default function ValoQr({
 	const handleClose = () => {
 		setOpen(false);
 		if (handleExternalClose) {
+			setUrl();
+			setState({
+				comment: "",
+				token: "",
+				amount: "",
+				currencyCode: "",
+			});
+
 			handleExternalClose();
 		}
 	};
@@ -38,6 +75,7 @@ export default function ValoQr({
 				url += `&${key}=${value.replace(/ /g, "%20")}`;
 			}
 		});
+		console.log(url);
 		setUrl(url);
 	};
 
@@ -51,33 +89,120 @@ export default function ValoQr({
 					// height: "20px",
 				}}
 			>
-				{Object.entries(state).map(([key, value]) => (
-					<Box
-						sx={{
-							mb: 1,
-						}}
-						key={key}
-					>
-						<TextField
-							value={value}
-							onChange={(e) => {
-								setState({
-									...state,
-									[key]: e.target.value,
-								});
-							}}
-							label={
-								key.charAt(0).toUpperCase() +
-								key.slice(1).replace(/([A-Z])/g, " $1")
-							}
-							size="small"
-						/>
+				{!url && (
+					<Box>
+						{Object.entries(state).map(([key, value]) => (
+							<Box
+								sx={{
+									mb: 1,
+								}}
+								key={key}
+							>
+								{key === "currencyCode" ? (
+									<FormControl fullWidth size="small">
+										<InputLabel>
+											{key.charAt(0).toUpperCase() +
+												key.slice(1).replace(/([A-Z])/g, " $1")}
+										</InputLabel>
+										<Select
+											value={value}
+											label={
+												key.charAt(0).toUpperCase() +
+												key.slice(1).replace(/([A-Z])/g, " $1")
+											}
+											onChange={(e) => {
+												setState({
+													...state,
+													[key]: e.target.value,
+												});
+											}}
+										>
+											{Object.entries(LocalCurrencySymbol).map(
+												([key, value]) => (
+													<MenuItem value={key} key={key}>
+														{key} <small> ({value})</small>{" "}
+													</MenuItem>
+												)
+											)}
+										</Select>
+									</FormControl>
+								) : key === "token" ? (
+									<FormControl fullWidth size="small">
+										<InputLabel>
+											{key.charAt(0).toUpperCase() +
+												key.slice(1).replace(/([A-Z])/g, " $1")}
+										</InputLabel>
+										<Select
+											value={value}
+											label={
+												key.charAt(0).toUpperCase() +
+												key.slice(1).replace(/([A-Z])/g, " $1")
+											}
+											onChange={(e) => {
+												setState({
+													...state,
+													[key]: e.target.value,
+												});
+											}}
+										>
+											{TOKEN.map(({ value, key }) => (
+												<MenuItem value={value} key={key}>
+													{key} <small> ({value})</small>{" "}
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+								) : (
+									<TextField
+										fullWidth
+										value={value}
+										onChange={(e) => {
+											setState({
+												...state,
+												[key]: e.target.value,
+											});
+										}}
+										label={
+											key.charAt(0).toUpperCase() +
+											key.slice(1).replace(/([A-Z])/g, " $1")
+										}
+										size="small"
+									/>
+								)}
+							</Box>
+						))}
+						<Box sx={{ textAlign: "right" }}>
+							<Button onClick={generate} variant="contained">
+								Generate
+							</Button>
+						</Box>
 					</Box>
-				))}
-				<Button onClick={generate} variant="contained">
-					Generate
-				</Button>
-				{url && <QRCodePage url={url} />}
+				)}
+
+				<Box>
+					{url && (
+						<Box>
+							<QRCodePage url={url} />
+							<Box sx={{ textAlign: "right" }}>
+								<Button
+									onClick={() => {
+										setState({
+											comment: "",
+											token: "",
+											amount: "",
+											currencyCode: "",
+										});
+										setUrl();
+									}}
+									variant="contained"
+									color="error"
+								>
+									Re-Generate
+								</Button>
+							</Box>
+						</Box>
+					)}
+				</Box>
 			</Box>
 		</Dialog>
 	);
