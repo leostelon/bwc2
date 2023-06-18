@@ -1,11 +1,14 @@
-import { Box, IconButton, Skeleton, styled as muiStyled } from "@mui/material";
+import {
+	Box,
+	IconButton,
+	Skeleton,
+	Tooltip,
+	styled as muiStyled,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getLink, getLinksWithId } from "../database/link";
-import {
-	AiOutlineDollarCircle,
-	AiOutlineShareAlt,
-} from "react-icons/ai";
+import { AiOutlineDollarCircle, AiOutlineShareAlt } from "react-icons/ai";
 import NoProfilePicture from "../assets/default-profile-icon.png";
 import ValoQr from "@/components/ValoQr";
 
@@ -33,6 +36,27 @@ export default function Home() {
 	useEffect(() => {
 		if (id) gLWId(id);
 	}, [id]);
+
+	const [showTooltip, setShowTooltip] = useState(false);
+	const [tooltipTitle, setTooltipTitle] = useState("Initial Title");
+
+	useEffect(() => {
+		if (showTooltip) {
+			// After state change, update the tooltip title
+			setTooltipTitle("Copied!");
+
+			// Reset the tooltip title after 2 seconds
+			const timeoutId = setTimeout(() => {
+				// setTooltipTitle("Copied");
+				setShowTooltip(false);
+			}, 2000);
+
+			// Clean up the timeout
+			return () => {
+				clearTimeout(timeoutId);
+			};
+		}
+	}, [showTooltip]);
 
 	return (
 		<div>
@@ -176,9 +200,32 @@ export default function Home() {
 									}
 								></LinkImg>
 								<Box>{l.data.title}</Box>
-								<IconButton aria-label="share">
-									<AiOutlineShareAlt />
-								</IconButton>
+								<Tooltip
+									title={tooltipTitle}
+									arrow
+									open={showTooltip && showTooltip === l.data.id}
+								>
+									<IconButton
+										aria-label="share"
+										onClick={(e) => {
+											e.stopPropagation();
+
+											navigator.clipboard
+												.writeText(`https://${l.data.url}`)
+												.then(() => {
+													setShowTooltip(l.data.id);
+												})
+												.catch((e) => {
+													console.error(
+														"Error copying text to clipboard:",
+														error
+													);
+												});
+										}}
+									>
+										<AiOutlineShareAlt />
+									</IconButton>
+								</Tooltip>
 							</LinkContainer>
 						))}
 					</Box>
