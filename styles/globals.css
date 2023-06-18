@@ -114,3 +114,28 @@ code {
 	right: 0;
 	color: white;
 }
+
+/* Inputs */
+.search-container {
+	display: flex;
+	background-color: #e8e8e89f;
+	border-radius: 6px;
+	padding: 4px 10px;
+	height: 40px;
+	align-items: center;
+	color: #828488;
+}
+
+.search-container input {
+	border: none;
+	background-color: rgba(255, 255, 255, 0);
+	margin-left: 8px;
+}
+
+.search-container input:focus {
+	outline: none;
+}
+
+.search-container img {
+	cursor: pointer;
+}

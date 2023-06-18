@@ -1,16 +1,15 @@
 import {
 	Box,
-	Button,
 	Dialog,
 	FormControl,
 	InputLabel,
 	MenuItem,
 	Select,
-	TextField,
 } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import QRCode from "qrcode";
 import { LocalCurrencySymbol } from "../assets/LOCAL_CURRENCY_CODES";
+import { BlueButton } from "./BlueButton";
 
 const TOKEN = [
 	{
@@ -38,12 +37,11 @@ export default function ValoQr({
 	displayName,
 }) {
 	const [open, setOpen] = useState(false);
-	const [loading, setLoading] = useState(false);
 	const [state, setState] = useState({
-		comment: "",
 		token: "",
 		amount: "",
 		currencyCode: "",
+		comment: "",
 	});
 	const [url, setUrl] = useState();
 
@@ -80,101 +78,155 @@ export default function ValoQr({
 	};
 
 	return (
-		<Dialog open={open} onClose={handleClose}>
+		<Dialog
+			open={open}
+			onClose={handleClose}
+			PaperProps={{
+				style: { borderRadius: "12px" },
+			}}
+			fullWidth
+		>
 			<Box
 				sx={{
 					p: 2,
-					// textAlign: "center",
-					// width: "100%",
-					// height: "20px",
+					textAlign: "center",
+					color: "#303031",
+					borderRadius: "14px",
 				}}
 			>
 				{!url && (
 					<Box>
-						{Object.entries(state).map(([key, value]) => (
-							<Box
-								sx={{
-									mb: 1,
-								}}
-								key={key}
-							>
-								{key === "currencyCode" ? (
-									<FormControl fullWidth size="small">
-										<InputLabel>
-											{key.charAt(0).toUpperCase() +
-												key.slice(1).replace(/([A-Z])/g, " $1")}
-										</InputLabel>
-										<Select
-											value={value}
-											label={
-												key.charAt(0).toUpperCase() +
-												key.slice(1).replace(/([A-Z])/g, " $1")
-											}
-											onChange={(e) => {
-												setState({
-													...state,
-													[key]: e.target.value,
-												});
+						<Box mb={1}>
+							<h2>Payment Details</h2>
+						</Box>
+						<p style={{ fontSize: "14px", color: "#828488" }}>
+							Enter valid details to generate QR code
+						</p>
+						<br />
+						<Box px={"20%"}>
+							{Object.entries(state).map(([key, value]) => (
+								<Box
+									sx={{
+										mb: 1,
+									}}
+									key={key}
+								>
+									{key === "currencyCode" ? (
+										<FormControl
+											fullWidth
+											size="small"
+											sx={{
+												textAlign: "start",
 											}}
 										>
-											{Object.entries(LocalCurrencySymbol).map(
-												([key, value]) => (
-													<MenuItem value={key} key={key}>
+											<InputLabel sx={{ fontSize: "14px", color: "#828488" }}>
+												{key.charAt(0).toUpperCase() +
+													key.slice(1).replace(/([A-Z])/g, " $1")}
+											</InputLabel>
+											<Select
+												value={value}
+												label={
+													key.charAt(0).toUpperCase() +
+													key.slice(1).replace(/([A-Z])/g, " $1")
+												}
+												onChange={(e) => {
+													setState({
+														...state,
+														[key]: e.target.value,
+													});
+												}}
+												sx={{
+													boxShadow: "none",
+													backgroundColor: "#e8e8e89f",
+													".MuiOutlinedInput-notchedOutline": { border: 0 },
+												}}
+											>
+												{Object.entries(LocalCurrencySymbol).map(
+													([key, value]) => (
+														<MenuItem value={key} key={key}>
+															{key} <small> ({value})</small>{" "}
+														</MenuItem>
+													)
+												)}
+											</Select>
+										</FormControl>
+									) : key === "token" ? (
+										<FormControl
+											fullWidth
+											size="small"
+											sx={{
+												textAlign: "start",
+											}}
+										>
+											<InputLabel sx={{ fontSize: "14px", color: "#828488" }}>
+												{key.charAt(0).toUpperCase() +
+													key.slice(1).replace(/([A-Z])/g, " $1")}
+											</InputLabel>
+											<Select
+												value={value}
+												label={
+													key.charAt(0).toUpperCase() +
+													key.slice(1).replace(/([A-Z])/g, " $1")
+												}
+												onChange={(e) => {
+													setState({
+														...state,
+														[key]: e.target.value,
+													});
+												}}
+												sx={{
+													boxShadow: "none",
+													backgroundColor: "#e8e8e89f",
+													".MuiOutlinedInput-notchedOutline": { border: 0 },
+												}}
+											>
+												{TOKEN.map(({ value, key }) => (
+													<MenuItem value={value} key={key}>
 														{key} <small> ({value})</small>{" "}
 													</MenuItem>
-												)
-											)}
-										</Select>
-									</FormControl>
-								) : key === "token" ? (
-									<FormControl fullWidth size="small">
-										<InputLabel>
-											{key.charAt(0).toUpperCase() +
-												key.slice(1).replace(/([A-Z])/g, " $1")}
-										</InputLabel>
-										<Select
-											value={value}
-											label={
-												key.charAt(0).toUpperCase() +
-												key.slice(1).replace(/([A-Z])/g, " $1")
-											}
-											onChange={(e) => {
-												setState({
-													...state,
-													[key]: e.target.value,
-												});
-											}}
+												))}
+											</Select>
+										</FormControl>
+									) : (
+										<Box
+											className="search-container"
+											sx={{ justifyContent: "flex-start" }}
 										>
-											{TOKEN.map(({ value, key }) => (
-												<MenuItem value={value} key={key}>
-													{key} <small> ({value})</small>{" "}
-												</MenuItem>
-											))}
-										</Select>
-									</FormControl>
-								) : (
-									<TextField
-										fullWidth
-										value={value}
-										onChange={(e) => {
-											setState({
-												...state,
-												[key]: e.target.value,
-											});
-										}}
-										label={
-											key.charAt(0).toUpperCase() +
-											key.slice(1).replace(/([A-Z])/g, " $1")
-										}
-										size="small"
-									/>
-								)}
-							</Box>
-						))}
-						<Box sx={{ textAlign: "right" }}>
-							<Button onClick={generate} variant="contained">
-								Generate
-							</Button>
+											<input
+												type="url"
+												placeholder={
+													key.charAt(0).toUpperCase() +
+													key.slice(1).replace(/([A-Z])/g, " $1")
+												}
+												value={value}
+												onInput={(e) =>
+													setState({
+														...state,
+														[key]: e.target.value,
+													})
+												}
+											/>
+										</Box>
+										// <TextField
+										// 	fullWidth
+										// 	value={value}
+										// 	onChange={(e) => {
+										// 		setState({
+										// 			...state,
+										// 			[key]: e.target.value,
+										// 		});
+										// 	}}
+										// 	label={
+										// 		key.charAt(0).toUpperCase() +
+										// 		key.slice(1).replace(/([A-Z])/g, " $1")
+										// 	}
+										// 	size="small"
+										// />
+									)}
+								</Box>
+							))}
+							<br />
+							<BlueButton title={"Generate QR"} onClick={generate} />
 						</Box>
 					</Box>
 				)}
@@ -182,23 +234,29 @@ export default function ValoQr({
 				<Box>
 					{url && (
 						<Box>
-							<QRCodePage url={url} />
-							<Box sx={{ textAlign: "right" }}>
-								<Button
-									onClick={() => {
-										setState({
-											comment: "",
-											token: "",
-											amount: "",
-											currencyCode: "",
-										});
-										setUrl();
-									}}
-									variant="contained"
-									color="error"
-								>
-									Re-Generate
-								</Button>
+							<Box mb={1}>
+								<h2>Scan QR code</h2>
+							</Box>
+							<p style={{ fontSize: "14px", color: "#828488" }}>
+								Scan this code using Valora app to make payment
+							</p>
+							<br />
+							<Box px={"20%"}>
+								<QRCodePage url={url} />
+								<Box>
+									<BlueButton
+										title={"New Payment"}
+										onClick={() => {
+											setState({
+												comment: "",
+												token: "",
+												amount: "",
+												currencyCode: "",
+											});
+											setUrl();
+										}}
+									/>
+								</Box>
 							</Box>
 						</Box>
 					)}
@@ -212,10 +270,10 @@ function QRCodePage({ url }) {
 	const canvasRef = useRef(null);
 
 	useEffect(() => {
-		generateQRCode();
-	}, []);
+		if (url) generateQRCode(url);
+	}, [url]);
 
-	const generateQRCode = async () => {
+	const generateQRCode = async (url) => {
 		const canvas = canvasRef.current;
 
 		try {

@@ -2,7 +2,10 @@ import { Box, IconButton, Skeleton, styled as muiStyled } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getLink, getLinksWithId } from "../database/link";
-import { AiFillDollarCircle, AiOutlineShareAlt } from "react-icons/ai";
+import {
+	AiOutlineDollarCircle,
+	AiOutlineShareAlt,
+} from "react-icons/ai";
 import NoProfilePicture from "../assets/default-profile-icon.png";
 import ValoQr from "@/components/ValoQr";
 
@@ -21,7 +24,6 @@ export default function Home() {
 			const { user, links } = await getLinksWithId(id);
 			setUser(user);
 			setLinks(links);
-			console.log(user);
 		} catch (error) {
 			console.log(error);
 		}
@@ -73,14 +75,34 @@ export default function Home() {
 					>
 						{user && (
 							<>
-								@{user.celo_id}
-								<IconButton
+								<Box
+									sx={{
+										color: "#303031",
+										textAlign: "center",
+										mb: 1,
+										fontWeight: "600",
+										fontSize: "16px",
+									}}
+								>
+									@{user.celo_id}
+								</Box>
+								<Box
+									className="box-icon box-icon-hover"
 									onClick={() => {
 										setIsOpenQR(true);
 									}}
+									sx={{
+										padding: "10px!important",
+										margin: 0,
+										backgroundColor: "rgb(230, 230, 230)",
+										borderRadius: "6px",
+									}}
 								>
-									<AiFillDollarCircle color="#FFD700" />
-								</IconButton>
+									<Box className="box-icon-icon">
+										<AiOutlineDollarCircle />
+									</Box>
+									Pay Now
+								</Box>
 							</>
 						)}
 					</Box>
@@ -101,6 +123,21 @@ export default function Home() {
 							width: "100%",
 						}}
 					>
+						<Box
+							sx={{
+								display: "flex",
+								flexDirection: "column",
+								alignItems: "center",
+							}}
+						>
+							<Skeleton
+								variant="circular"
+								sx={{ my: 1, borderRadius: "50%" }}
+								height={"100px"}
+								width={"100px"}
+							/>
+						</Box>
+						<br />
 						{Array.from({ length: 5 }).map((_, i) => (
 							<Skeleton
 								variant="rectangular"
@@ -111,33 +148,40 @@ export default function Home() {
 						))}
 					</Box>
 				) : (
-					links.map((l, i) => (
-						<LinkContainer
-							key={i}
-							onClick={async () => {
-								await getLink(l.data.id);
-								window.open(`https://${l.data.url}`, "_blank");
-							}}
-						>
-							<LinkImg
-								style={
-									l.data.image
-										? {
-												backgroundImage: `url(${l.data.image})`,
-												backgroundPosition: "center",
-												backgroundRepeat: "no-repeat",
-												backgroundSize: "cover",
-												borderRadius: "50px",
-										  }
-										: {}
-								}
-							></LinkImg>
-							<Box>{l.data.title}</Box>
-							<IconButton aria-label="share">
-								<AiOutlineShareAlt />
-							</IconButton>
-						</LinkContainer>
-					))
+					<Box
+						sx={{
+							padding: { xs: "0 5%", sm: "0 10%", md: "0 20%" },
+							width: "100%",
+						}}
+					>
+						{links.map((l, i) => (
+							<LinkContainer
+								key={i}
+								onClick={async () => {
+									await getLink(l.data.id);
+									window.open(`https://${l.data.url}`, "_blank");
+								}}
+							>
+								<LinkImg
+									style={
+										l.data.image
+											? {
+													backgroundImage: `url(${l.data.image})`,
+													backgroundPosition: "center",
+													backgroundRepeat: "no-repeat",
+													backgroundSize: "cover",
+													borderRadius: "50px",
+											  }
+											: {}
+									}
+								></LinkImg>
+								<Box>{l.data.title}</Box>
+								<IconButton aria-label="share">
+									<AiOutlineShareAlt />
+								</IconButton>
+							</LinkContainer>
+						))}
+					</Box>
 				)}
 			</MainContainer>
 		</div>
@@ -161,7 +205,6 @@ const MainContainer = muiStyled(Box)({
 });
 
 const LinkContainer = muiStyled(Box)({
-	width: "80%",
 	maxWidth: "990px",
 	border: "2px solid rgb(0, 0, 0)",
 	boxShadow: "rgb(0, 0, 0) 8px 8px 0px 0px",
@@ -173,7 +216,7 @@ const LinkContainer = muiStyled(Box)({
 	textAlign: "center",
 	padding: "10px 18px",
 
-	marginBottom: "16px",
+	marginBottom: "24px",
 
 	display: "flex",
 	justifyContent: "space-between",
